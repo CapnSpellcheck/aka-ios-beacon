@@ -9,7 +9,7 @@
 #import "AKABeaconErrors.h"
 #import "AKABindingExpression.h"
 #import "AKABindingContextProtocol.h"
-#import "AKAbinding.h"
+#import "AKABinding.h"
 
 typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
 {
