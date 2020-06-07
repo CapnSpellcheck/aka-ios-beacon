@@ -343,7 +343,10 @@
     NSParameterAssert([self itemAtIndex:index] == item);
 
     BOOL result = index < self.items.count;
-
+    UIResponder *initialResponder = self.activeResponder;
+    NSUInteger initialIndex = self.activeItemIndex;
+    AKAKeyboardActivationSequenceItem initialItem = self.activeItem;
+   
     if (result)
     {
         UIResponder* responder = item.responderForKeyboardActivationSequence;
@@ -355,6 +358,11 @@
         {
 
             result = [item activateResponder];
+            if (!result) {
+              result = [self registerActiveResponder:initialResponder
+                                             forItem:initialItem
+                                             atIndex:initialIndex];
+            }
         }
     }
 
@@ -363,7 +371,7 @@
 
 - (BOOL)                                      deactivate
 {
-    BOOL result = YES;
+    BOOL result = NO;
     UIResponder* responder = self.activeResponder;
 
     if (responder.isFirstResponder && [responder canResignFirstResponder])

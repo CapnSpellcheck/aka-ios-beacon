@@ -30,8 +30,8 @@
  * @param workloadDifference a value specifying the amount by which the workload has changed.
  */
 - (void)                operation:(AKAOperation*)operation
-                didUpdateProgress:(CGFloat)progressDifference
-                         workload:(CGFloat)workloadDifference;
+                didUpdateProgress:(float)progressDifference
+                         workload:(float)workloadDifference;
 
 @optional
 - (void)                operation:(AKAOperation*)operation
