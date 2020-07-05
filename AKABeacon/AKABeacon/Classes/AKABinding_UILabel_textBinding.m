@@ -120,12 +120,12 @@
                 {
                     if ([value respondsToSelector:@selector(description)])
                     {
-                        value = [value description];
+                        text = [value description];
                     }
                     // Here, we should have been relatively safe to get a string, but of course,
                     // no. So be extra careful and use stringWithFormat hoping that that will
                     // cover most remaining oddities
-                    text = [NSString stringWithFormat:@"%@", value];
+//                    text = [NSString stringWithFormat:@"%@", value];
                 }
                 else if (binding.textForUndefinedValue.length > 0)
                 {

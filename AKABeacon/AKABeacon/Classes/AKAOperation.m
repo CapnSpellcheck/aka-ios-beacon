@@ -869,7 +869,7 @@
         [self willFinish];
         [self notifyObserversOperationDidFinish];
         [self setState:AKAOperationStateFinished andPerformSynchronizedBlock:^{
-            self.isFinishing = NO;
+            weakSelf.isFinishing = NO;
         }];
         [self updateProgressAndWorkloadUsingBlock:^(CGFloat * _Nonnull progressReference, CGFloat * _Nonnull workloadReference) {
             *progressReference = 1.0;
