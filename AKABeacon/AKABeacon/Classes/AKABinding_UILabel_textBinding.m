@@ -111,16 +111,21 @@
             {
                 AKABinding_UILabel_textBinding* binding = target;
                 NSString* text;
+                NSAttributedString *attributedText;
 
                 if ([value isKindOfClass:[NSString class]])
                 {
                     text = value;
                 }
+                else if ([value isKindOfClass: [NSAttributedString class]]) {
+                    attributedText = value;
+                }
                 else if (value != nil && value != [NSNull null])
                 {
-                    if ([value respondsToSelector:@selector(description)])
-                    {
+                    if ([value respondsToSelector:@selector(description)]) {
                         text = [value description];
+                    } else {
+                        text = @"";
                     }
                     // Here, we should have been relatively safe to get a string, but of course,
                     // no. So be extra careful and use stringWithFormat hoping that that will
@@ -138,12 +143,16 @@
                 }
 
                 [binding transitionAnimation:^{
-                     binding.label.text = text;
+                    if (attributedText != nil)
+                        binding.label.attributedText = attributedText;
+                    else {
+                        binding.label.text = text;
 
-                     if (binding.textAttributeFormatter)
-                     {
-                         [binding applyTextAttributesToLabelText];
-                     }
+                        if (binding.textAttributeFormatter)
+                        {
+                            [binding applyTextAttributesToLabelText];
+                        }
+                    }
                  }];
             }
             observationStarter:

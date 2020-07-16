@@ -76,9 +76,11 @@
                 {
                     binding.textView.text = value;
                 }
+                else if ([value isKindOfClass:[NSAttributedString class]])
+                    binding.textView.attributedText = value;
                 else if (value != nil)
                 {
-                    binding.textView.text = [NSString stringWithFormat:@"%@", value];
+                    binding.textView.text = [value description];
                 }
             }
                           observationStarter:
