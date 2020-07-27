@@ -14,5 +14,6 @@
 
 @interface AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding:
     AKAKeyboardBinding_AKACustomKeyboardResponderView
+@property(nonatomic, readonly)       UIDatePicker*                          pickerView;
 
 @end

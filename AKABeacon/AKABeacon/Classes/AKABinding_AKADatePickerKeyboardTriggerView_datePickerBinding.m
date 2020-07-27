@@ -18,7 +18,6 @@
     >
 
 @property(nonatomic, readonly)       AKADatePickerKeyboardTriggerView*      triggerView;
-@property(nonatomic, readonly)       UIDatePicker*                          pickerView;
 
 @property(nonatomic)                 NSDate*                                originalDate;
 @property(nonatomic)                 NSDate*                                previousDate;
