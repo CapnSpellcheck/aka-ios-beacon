@@ -32,9 +32,9 @@
 @property(nonatomic)                 NSArray*                           choices;
 @property(nonatomic, readonly)       AKABindingExpression*              bindingExpression;
 @property(nonatomic, readonly, weak) AKAPickerKeyboardTriggerView*      triggerView;
-@property(nonatomic, readonly)       UIPickerView*                      pickerView;
 @property(nonatomic, readonly) AKABinding_UIPickerView_valueBinding*    pickerBinding;
 @property(nonatomic)                 id previousValue;
+@property                            BOOL                               disableFlip;
 
 @end
 
@@ -61,7 +61,12 @@
                        @"required":         @YES,
                        @"bindingType":      [AKABinding_UIPickerView_valueBinding class],
                        @"use":              @(AKABindingAttributeUseManually)
-                   }
+                   },
+                   @"disableFlip": @{
+                         @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         }
+
                }
         };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
@@ -331,24 +336,26 @@
     if (block)
     {
         double duration = .3;
-        UIViewAnimationOptions options;
+        UIViewAnimationOptions options = UIViewAnimationOptionTransitionCrossDissolve;
 
         NSComparisonResult order = [self.pickerBinding orderInChoicesForValue:oldValue value:newValue];
 
-        switch (order)
-        {
-            case NSOrderedAscending:
-                options = UIViewAnimationOptionTransitionFlipFromTop;
-                break;
+       if (!_disableFlip) {
+           switch (order)
+           {
+               case NSOrderedAscending:
+                   options = UIViewAnimationOptionTransitionFlipFromTop;
+                   break;
 
-            case NSOrderedDescending:
-                options = UIViewAnimationOptionTransitionFlipFromBottom;
-                break;
+               case NSOrderedDescending:
+                   options = UIViewAnimationOptionTransitionFlipFromBottom;
+                   break;
 
-            default:
-                options = UIViewAnimationOptionTransitionCrossDissolve;
-                break;
-        }
+               default:
+                   options = UIViewAnimationOptionTransitionCrossDissolve;
+                   break;
+           }
+       }
 
 
         [UIView transitionWithView:self.triggerView

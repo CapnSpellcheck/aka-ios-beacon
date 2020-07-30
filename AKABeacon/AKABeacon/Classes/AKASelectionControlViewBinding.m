@@ -27,7 +27,7 @@
            @"expressionType":           @(AKABindingExpressionTypeAnyNoArray),
            @"attributes":
                @{ @"choices":
-                      @{ @"required":        @YES,
+                      @{ @"required":        @NO,
                          @"expressionType":  @(AKABindingExpressionTypeAnyKeyPath|AKABindingExpressionTypeArray),
                          @"use":             @(AKABindingAttributeUseBindToBindingProperty),
                          @"bindingProperty": @"choices"

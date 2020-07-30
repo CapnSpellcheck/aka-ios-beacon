@@ -22,6 +22,11 @@
 @property(nonatomic, readonly) BOOL                                 needsReloadChoices;
 @property(nonatomic, readonly, nullable) id                         otherValue;
 
+@property(nonatomic, readonly) UIPickerView*                        pickerView;
+
+- (void)                                animateTriggerForValue:(id)oldValue
+                                                      changeTo:(id)newValue
+                                                    animations:(void (^)())block;
 @end
 
 

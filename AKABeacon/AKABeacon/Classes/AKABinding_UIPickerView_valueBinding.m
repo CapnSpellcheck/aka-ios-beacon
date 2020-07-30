@@ -12,15 +12,24 @@
 
 @interface AKABinding_UIPickerView_valueBinding() <UIPickerViewDelegate, UIPickerViewDataSource>
 
-@property(nonatomic, readonly)       UIPickerView*             pickerView;
 @property(nonatomic, readonly)       NSArray*                  choices;
 @property(nonatomic, readonly)       AKAProperty*              choicesProperty;
 @property(nonatomic, readonly)       AKAUnboundProperty*       titleProperty;
 @property(nonatomic)                 NSInteger                 previouslySelectedRow;
+@property (nonatomic)                BOOL                      pickerBindingEnabled;
 
 @end
 
 @implementation AKABinding_UIPickerView_valueBinding
+
+- (instancetype)init
+{
+   if (self = [super init])
+   {
+      _pickerBindingEnabled = YES;
+   }
+   return self;
+}
 
 + (AKABindingSpecification *)                   specification
 {
@@ -31,7 +40,14 @@
         NSDictionary* spec =
         @{ @"bindingType":              [AKABinding_UIPickerView_valueBinding class],
            @"targetType":               [UIPickerView class],
-           };
+           @"attributes": @{
+                 @"bindingEnabled": @{
+                       @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                       @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                       @"bindingProperty": @"pickerBindingEnabled",
+                 }
+           }
+        };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
 
@@ -89,11 +105,13 @@
             {
                 AKABinding_UIPickerView_valueBinding* binding = target;
 
-                binding.pickerView.delegate = binding;
-                binding.pickerView.dataSource = binding;
+               if (binding.pickerBindingEnabled) {
+                  binding.pickerView.delegate = binding;
+                  binding.pickerView.dataSource = binding;
 
-                [binding setNeedsReloadChoices];
-                [binding reloadChoicesIfNeeded];
+                  [binding setNeedsReloadChoices];
+                  [binding reloadChoicesIfNeeded];
+               }
 
                 return YES;
             }
@@ -103,8 +121,10 @@
             {
                 AKABinding_UIPickerView_valueBinding* binding = target;
 
-                binding.pickerView.delegate = nil;
-                binding.pickerView.dataSource = nil;
+               if (binding.pickerBindingEnabled) {
+                  binding.pickerView.delegate = nil;
+                  binding.pickerView.dataSource = nil;
+               }
                 
                 return YES;
             }];
@@ -161,6 +181,9 @@
 @synthesize choicesProperty = _choicesProperty;
 - (AKAProperty*)choicesProperty
 {
+   if (!self.pickerBindingEnabled)
+      return nil;
+   
     if (_choicesProperty == nil)
     {
         id<AKABindingContextProtocol> context = self.bindingContext;
@@ -187,6 +210,9 @@
 @synthesize choices = _choices;
 - (NSArray*)                                           choices
 {
+   if (!self.pickerBindingEnabled)
+      return @[];
+   
     if (_choices == nil)
     {
         id value = self.choicesProperty.value;
