@@ -153,7 +153,7 @@
                 }
                 else if (value == nil || value == [NSNull null])
                 {
-                    image = [binding imageWithWidth:0 height:0 color:[UIColor clearColor]];
+                   image = nil;
                 }
 
                 [binding transitionAnimation:^{
