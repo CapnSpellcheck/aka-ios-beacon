@@ -56,6 +56,7 @@
 @property(nonatomic) UITableViewRowAnimation                                updateAnimation;
 @property(nonatomic) UITableViewRowAnimation                                deleteAnimation;
 @property(nonatomic, weak) void                                           (^animatorBlock)(void(^)());
+@property(nonatomic) BOOL neverStopObservation;
 
 #pragma mark - Dynamic Sections
 
@@ -141,6 +142,10 @@
                                                @"expressionType":      @(AKABindingExpressionTypeAnyKeyPath),
                                                @"use":                 @(AKABindingAttributeUseBindToBindingProperty)
                                                },
+                                       @"neverStopObservation":       @{
+                                             @"expressionType":      @(AKABindingExpressionTypeBoolean),
+                                             @"use":                 @(AKABindingAttributeUseBindToBindingProperty)
+                                             },
                                        }
                                };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
@@ -246,32 +251,34 @@
             {
                 AKABinding_UITableView_dataSourceBinding* binding = target;
 
-                if (binding.delegateDispatcher)
-                {
-                    [binding.delegateDispatcher restoreOriginalDataSourceAndDelegate];
-                    binding->_delegateDispatcher = nil;
+               if (!binding.neverStopObservation) {
+                   if (binding.delegateDispatcher)
+                   {
+                       [binding.delegateDispatcher restoreOriginalDataSourceAndDelegate];
+                       binding->_delegateDispatcher = nil;
 
-                    // TODO: cleanup deinitialization:
-                    [self.pendingTableViewChanges removeAllObjects];
-                    if (self.usesDynamicSections)
-                    {
-                        binding.dynamicSections = nil;
-                        binding.dynamicSectionsSource = nil;
-                        [self removeArrayItemBindings];
-                    }
+                       // TODO: cleanup deinitialization:
+                       [self.pendingTableViewChanges removeAllObjects];
+                       if (self.usesDynamicSections)
+                       {
+                           binding.dynamicSections = nil;
+                           binding.dynamicSectionsSource = nil;
+                           [self removeArrayItemBindings];
+                       }
 
-                    // Reload tableView to let original delegate take over (if defined, otherwise
-                    // the table will be empty.
-                    [self.tableView reloadData];
+                       // Reload tableView to let original delegate take over (if defined, otherwise
+                       // the table will be empty.
+                       [self.tableView reloadData];
 
-                    /* Do not perform any additional logic
-                    [self removeSelectionsAnimated:NO];
+                       /* Do not perform any additional logic
+                       [self removeSelectionsAnimated:NO];
 
-                    [self reloadTableViewAnimated:NO];
-                     */
-                }
-                
-                return YES;
+                       [self reloadTableViewAnimated:NO];
+                        */
+                   }
+                  
+               }
+               return YES;
             }];
 }
 
@@ -442,6 +449,23 @@
 
 #pragma mark - Change Tracking
 
+- (BOOL)stopObservingChanges
+{
+   BOOL result = YES;
+   
+   if (!self.neverStopObservation) {
+      result = [super stopObservingChanges];
+   }
+   
+   return result;
+}
+
+- (BOOL)startObservingChanges {
+   if (!self.isObserving)
+      return [super startObservingChanges];
+   
+   return YES;
+}
 - (void)                          willStartObservingChanges
 {
     // We need to skip table view updates while the binding is starting change tracking, which
@@ -454,11 +478,13 @@
 {
     self.startingChangeObservation = NO;
 
-    self.isObserving = YES;
+    if(!self.isObserving) {
+       self.isObserving = YES;
 
-    // Perform a reload of the table view once the change observation start process if finished.
-    // From this point on, the binding will synchronize the table view with changes to row data.
-    [self reloadTableViewAnimated:NO];
+       // Perform a reload of the table view once the change observation start process if finished.
+       // From this point on, the binding will synchronize the table view with changes to row data.
+       [self reloadTableViewAnimated:NO];
+    }
 }
 
 - (void)                           willStopObservingChanges
