@@ -132,7 +132,7 @@
                     // cover most remaining oddities
 //                    text = [NSString stringWithFormat:@"%@", value];
                 }
-                else if (binding.textForUndefinedValue.length > 0)
+                else if (binding.textForUndefinedValue != nil)
                 {
                     text = binding.textForUndefinedValue;
                 }
