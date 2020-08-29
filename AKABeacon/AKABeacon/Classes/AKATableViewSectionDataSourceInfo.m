@@ -18,4 +18,8 @@
 
 @implementation AKATableViewSectionDataSourceInfo
 
+-(NSString*) description {
+   return [NSString stringWithFormat:@"<AKATableViewSectionDataSourceInfo rows=%@>", _rows];
+}
+
 @end

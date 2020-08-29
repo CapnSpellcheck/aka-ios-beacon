@@ -815,8 +815,8 @@
         UITableView* tableView = self.tableView;
 
         // Defer the row-heights update if a reload or update is dispatched or if the table view is scrolling.
-        if (self.tableViewReloadDispatched || self.tableViewUpdateDispatched ||
-            tableView.isDragging || tableView.isDecelerating)
+        if (self.tableViewReloadDispatched || self.tableViewUpdateDispatched /*||
+            tableView.isDragging || tableView.isDecelerating */)
         {
             self.tableViewRowHeightsUpdateDispatched = NO; // Set to NO before dispatch (otherwise nothing will happen)
             [self dispatchUpdateTableViewRowHeights:self.animateDispatchedTableViewUpdate];
@@ -842,20 +842,20 @@
             UITableView* tableView = self.tableView;
             if (tableView)
             {
-                if (!tableView.isDragging && !tableView.isDecelerating)
-                {
+//                if (!tableView.isDragging && !tableView.isDecelerating)
+//                {
                     [self reloadTableViewAnimated:YES];
                     [self dispatchUpdateTableViewRowHeights:NO];
 
                     self.tableViewReloadDispatched = NO;
-                }
-                else
-                {
-                    // It's not safe to update, redispatch and try again.
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self performPendingTableViewReload];
-                    });
-                }
+//                }
+//                else
+//                {
+//                    // It's not safe to update, redispatch and try again.
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        [self performPendingTableViewReload];
+//                    });
+//                }
             }
         };
 
@@ -882,8 +882,8 @@
             UITableView* tableView = self.tableView;
             if (tableView)
             {
-                if (!tableView.isDragging && !tableView.isDecelerating)
-                {
+//                if (!tableView.isDragging && !tableView.isDecelerating)
+//                {
                     [self beginUpdatingTableView:tableView];
                     for (NSNumber* sectionN in self.pendingTableViewChanges.allKeys)
                     {
@@ -900,14 +900,14 @@
 
                     // Everything is up to date, disable already dispatched updates.
                     self.tableViewUpdateDispatched = NO;
-                }
-                else
-                {
-                    // It's not safe to update, redispatch and try again.
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self performPendingTableViewUpdates];
-                    });
-                }
+//                }
+//                else
+//                {
+//                    // It's not safe to update, redispatch and try again.
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        [self performPendingTableViewUpdates];
+//                    });
+//                }
             }
         };
 
@@ -1092,6 +1092,7 @@
 
     AKATableViewSectionDataSourceInfo* sectionInfo = [self tableView:tableView infoForSection:section];
     NSInteger result = (NSInteger)sectionInfo.rows.count;
+   NSLog(@"AKABinding_UITableView_dataSourceBinding | numberOfRowsInSection: %ld = %ld", (long)section, (long)result);
     return result;
 }
 
