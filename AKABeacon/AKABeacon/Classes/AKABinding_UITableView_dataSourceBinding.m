@@ -801,9 +801,9 @@
             self.tableViewUpdateDispatched = YES;
 
             __weak typeof(self) weakSelf = self;
-            dispatch_async(dispatch_get_main_queue(), ^{
+//            dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf performPendingTableViewUpdates];
-            });
+//            });
         }
     }
 }
