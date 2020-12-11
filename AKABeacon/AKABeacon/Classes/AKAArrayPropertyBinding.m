@@ -202,9 +202,9 @@
     {
         [self propagateBindingDelegateMethod:@selector(binding:collectionControllerWillChangeContent:)
                                   usingBlock:
-         ^(id<AKAArrayPropertyBindingDelegate> delegate, outreq_BOOL stop __unused)
+         ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
          {
-             [delegate binding:self collectionControllerWillChangeContent:self.collectionController];
+             [(id<AKAArrayPropertyBindingDelegate>)delegate binding:self collectionControllerWillChangeContent:self.collectionController];
          }];
     }
 
@@ -219,13 +219,13 @@
         // Deletions
         [self propagateBindingDelegateMethod:@selector(binding:collectionController:didDeleteObject:atIndex:)
                                   usingBlock:
-         ^(id<AKAArrayPropertyBindingDelegate> delegate, outreq_BOOL stop __unused)
+         ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
          {
              [arrayComparer.deletedItemIndexes enumerateIndexesWithOptions:NSEnumerationReverse
                                                                 usingBlock:
               ^(NSUInteger idx, BOOL * _Nonnull __unused localStop)
               {
-                  [delegate          binding:self
+                  [(id<AKAArrayPropertyBindingDelegate>)delegate          binding:self
                         collectionController:arrayComparer
                              didDeleteObject:oldTargetArray[idx]
                                      atIndex:idx];
@@ -235,7 +235,7 @@
         // Movements
         [self propagateBindingDelegateMethod:@selector(binding:collectionController:didMoveObject:fromIndex:toIndex:)
                                   usingBlock:
-         ^(id<AKAArrayPropertyBindingDelegate> delegate, outreq_BOOL stop __unused)
+         ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
          {
              NSArray* permutation = arrayComparer.movementsForTableViews;
              for (NSUInteger targetIndex=0;
@@ -248,7 +248,7 @@
                      NSUInteger source = (NSUInteger)((NSInteger)targetIndex + offset);
                      NSUInteger target = targetIndex;
 
-                     [delegate           binding:self
+                     [(id<AKAArrayPropertyBindingDelegate>)delegate           binding:self
                             collectionController:arrayComparer
                                    didMoveObject:oldTargetArray[source]
                                        fromIndex:source
@@ -260,13 +260,13 @@
         // Insertions
         [self propagateBindingDelegateMethod:@selector(binding:collectionController:didInsertObject:atIndex:)
                                   usingBlock:
-         ^(id<AKAArrayPropertyBindingDelegate> delegate, outreq_BOOL stop __unused)
+         ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
          {
              [arrayComparer.insertedItemIndexes enumerateIndexesWithOptions:NSEnumerationReverse
                                                                  usingBlock:
               ^(NSUInteger idx, BOOL * _Nonnull __unused localStop)
               {
-                  [delegate          binding:self
+                  [(id<AKAArrayPropertyBindingDelegate>)delegate          binding:self
                         collectionController:arrayComparer
                              didInsertObject:newTargetArray[idx]
                                      atIndex:idx];
@@ -294,9 +294,9 @@
     {
         [self propagateBindingDelegateMethod:@selector(binding:collectionControllerDidChangeContent:)
                                   usingBlock:
-         ^(id<AKAArrayPropertyBindingDelegate> delegate, outreq_BOOL stop __unused)
+         ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
          {
-             [delegate binding:self collectionControllerDidChangeContent:self.collectionController];
+             [(id<AKAArrayPropertyBindingDelegate>)delegate binding:self collectionControllerDidChangeContent:self.collectionController];
          }];
 
         self.collectionController = nil;

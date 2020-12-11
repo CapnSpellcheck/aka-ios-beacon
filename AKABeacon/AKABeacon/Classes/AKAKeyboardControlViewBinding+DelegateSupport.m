@@ -17,9 +17,9 @@
     __block BOOL result = YES;
     [self propagateBindingDelegateMethod:@selector(shouldBinding:responderActivate:)
                               usingBlock:
-     ^(id<AKAKeyboardControlViewBindingDelegate> delegate, outreq_BOOL stop)
+     ^(id<AKABindingDelegate> delegate, outreq_BOOL stop)
      {
-         result = [delegate shouldBinding:self responderActivate:responder];
+         result = [(id<AKAKeyboardControlViewBindingDelegate>)delegate shouldBinding:self responderActivate:responder];
          *stop = !result;
      }];
 
@@ -32,9 +32,9 @@
 
     [self propagateBindingDelegateMethod:@selector(binding:responderWillActivate:)
                               usingBlock:
-     ^(id<AKAKeyboardControlViewBindingDelegate> delegate, outreq_BOOL stop __unused)
+     ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
      {
-         [delegate binding:self responderWillActivate:responder];
+         [(id<AKAKeyboardControlViewBindingDelegate>)delegate binding:self responderWillActivate:responder];
      }];
 }
 
@@ -44,9 +44,9 @@
 
     [self propagateBindingDelegateMethod:@selector(binding:responderDidActivate:)
                               usingBlock:
-     ^(id<AKAKeyboardControlViewBindingDelegate> delegate, outreq_BOOL stop __unused)
+     ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
      {
-         [delegate binding:self responderDidActivate:responder];
+         [(id<AKAKeyboardControlViewBindingDelegate>)delegate binding:self responderDidActivate:responder];
      }];
 }
 
@@ -55,9 +55,9 @@
     __block BOOL result = YES;
     [self propagateBindingDelegateMethod:@selector(shouldBinding:responderDeactivate:)
                               usingBlock:
-     ^(id<AKAKeyboardControlViewBindingDelegate> delegate, outreq_BOOL stop)
+     ^(id<AKABindingDelegate> delegate, outreq_BOOL stop)
      {
-         result = [delegate shouldBinding:self responderDeactivate:responder];
+         result = [(id<AKAKeyboardControlViewBindingDelegate>)delegate shouldBinding:self responderDeactivate:responder];
          *stop = !result;
      }];
 
@@ -68,9 +68,9 @@
 {
     [self propagateBindingDelegateMethod:@selector(binding:responderWillDeactivate:)
                               usingBlock:
-     ^(id<AKAKeyboardControlViewBindingDelegate> delegate, outreq_BOOL stop __unused)
+     ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
      {
-         [delegate binding:self responderWillDeactivate:responder];
+         [(id<AKAKeyboardControlViewBindingDelegate>)delegate binding:self responderWillDeactivate:responder];
      }];
 }
 
@@ -84,9 +84,9 @@
 
     [self propagateBindingDelegateMethod:@selector(binding:responderDidDeactivate:)
                               usingBlock:
-     ^(id<AKAKeyboardControlViewBindingDelegate> delegate, outreq_BOOL stop __unused)
+     ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
      {
-         [delegate binding:self responderDidDeactivate:responder];
+         [(id<AKAKeyboardControlViewBindingDelegate>)delegate binding:self responderDidDeactivate:responder];
      }];
 }
 
