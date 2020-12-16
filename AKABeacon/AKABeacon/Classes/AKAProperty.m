@@ -377,7 +377,11 @@
 
 - (id)value
 {
-    return [self valueForTarget:self.target];
+   @try {
+      return [self valueForTarget:self.target];
+   } @catch (NSException *exception) {
+      return nil;
+   }
 }
 
 - (void)setValue:(id)value
