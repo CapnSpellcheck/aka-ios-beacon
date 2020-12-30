@@ -16,13 +16,14 @@
 
 #import "AKACompositeControl+BindingDelegatePropagation.h"
 
+NSString *const kDefaultKeyboardActivationSequenceIdentifier = @"DEFAULT";
+
 @interface AKAKeyboardControlViewBinding ()
 {
     __weak AKAKeyboardActivationSequence* _keyboardActivationSequence;
     UIView*                               _savedInputAccessoryView;
 }
 @end
-
 
 @implementation AKAKeyboardControlViewBinding
 
@@ -50,7 +51,12 @@
                       @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
                          @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
                          @"bindingProperty": @"shouldParticipateInKeyboardActivationSequence"
-                         }
+                         },
+                  @"KBActivationSequenceID":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeStringConstant),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"keyboardActivationSequenceID"
+                         },
                   }
            };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[AKAControlViewBinding specification]];
@@ -67,6 +73,7 @@
         self.shouldParticipateInKeyboardActivationSequence = YES;
         self.autoActivate = NO;
         self.liveModelUpdates = YES;
+        _keyboardActivationSequenceID = kDefaultKeyboardActivationSequenceIdentifier;
     }
     return self;
 }

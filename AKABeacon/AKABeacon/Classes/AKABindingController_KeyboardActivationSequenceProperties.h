@@ -10,6 +10,7 @@
 
 @interface AKABindingController ()
 
-@property(nonatomic, strong, nullable) AKAKeyboardActivationSequence* keyboardActivationSequenceStorage;
+//@property(nonatomic, strong, nullable) AKAKeyboardActivationSequence* keyboardActivationSequenceStorage;
+@property(nonatomic, strong) NSMutableDictionary<NSString*, AKAKeyboardActivationSequence*> * keyboardActivationSequenceStorage;
 
 @end

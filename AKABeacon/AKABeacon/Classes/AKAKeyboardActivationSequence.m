@@ -54,11 +54,12 @@
     return self;
 }
 
-- (instancetype)                        initWithDelegate:(id<AKAKeyboardActivationSequenceDelegate>)delegate
+- (instancetype) initWithDelegate:(id<AKAKeyboardActivationSequenceDelegate>)delegate identifier:(NSString*)identifier
 {
     if (self = [self init])
     {
         self.delegate = delegate;
+        _identifier = [identifier copy];
     }
 
     return self;
@@ -188,7 +189,7 @@
          (void)stop; // not needed
          UIResponder* responder = [item responderForKeyboardActivationSequence];
 
-         if (responder != nil)
+         if (responder != nil && [item.keyboardActivationSequenceID isEqualToString:self.identifier])
          {
              [self addItem:item];
              UIResponder* activeResponder = self.activeResponder;

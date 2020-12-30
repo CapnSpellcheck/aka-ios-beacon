@@ -239,7 +239,9 @@
 {
     if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
     {
-        [self.keyboardActivationSequence setNeedsUpdate];
+       NSString* kasID = ((id<AKAKeyboardActivationSequenceItemProtocol>)binding).keyboardActivationSequenceID;
+       [self setKeyboardActivationSequenceWithIdentifierNeedsUpdate:kasID];
+//        [self.keyboardActivationSequence setNeedsUpdate];
     }
 
     id<AKABindingControllerDelegate> delegate = self.delegate;
@@ -256,7 +258,8 @@
 
 - (void)                           didUpdateBindings
 {
-    [self.keyboardActivationSequence updateIfNeeded];
+   [self updateKeyboardActivationSequencesIfNeeded];
+//    [self.keyboardActivationSequence updateIfNeeded];
 }
 
 @end

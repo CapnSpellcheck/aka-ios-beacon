@@ -215,6 +215,10 @@
                            delegate:delegate])
     {
         _dataContext = dataContext;
+       if (parent == nil)
+       {
+           [self initializeKeyboardActivationSequence];
+       }
         self.dataContextProperty = [AKAProperty propertyOfWeakTarget:self
                                                           getter:
                                 ^id _Nullable(id  _Nonnull target) {
@@ -231,10 +235,7 @@
                                  excludeTargetObjects:self.excludedTargetObjectHieraries
                                                 error:error])
         {
-            if (parent == nil)
-            {
-                [self initializeKeyboardActivationSequence];
-            }
+            
         }
         else
         {
@@ -283,14 +284,15 @@
     {
         self.dataContextProperty = dataContextProperty;
 
+       if (parent == nil)
+       {
+           [self initializeKeyboardActivationSequence];
+       }
+       
         if ([self addBindingsForTargetObjectHierarchy:targetObjectHierarchy
                                  excludeTargetObjects:self.excludedTargetObjectHieraries
                                                 error:error])
         {
-            if (parent == nil)
-            {
-                [self initializeKeyboardActivationSequence];
-            }
         }
         else
         {

@@ -15,8 +15,11 @@
 
 @interface AKABindingController(KeyboardActivationSequence) <AKAKeyboardActivationSequenceDelegate>
 
-@property(nonatomic, readonly) AKAKeyboardActivationSequence* keyboardActivationSequence;
+//@property(nonatomic, readonly) AKAKeyboardActivationSequence* keyboardActivationSequence;
+- (AKAKeyboardActivationSequence*) keyboardActivationSequenceWithIdentifier:(NSString*)identifier;
 
 - (void)initializeKeyboardActivationSequence;
+- (void) setKeyboardActivationSequenceWithIdentifierNeedsUpdate:(NSString*)identifier;
+- (void) updateKeyboardActivationSequencesIfNeeded;
 
 @end

@@ -20,24 +20,40 @@
     if (!self.keyboardActivationSequenceStorage)
     {
         // NOTE: we might want to support local sequences for child controllers. If so, just remove if(parent) path.
-        AKABindingController* parent = self.parent;
-        if (parent)
-        {
-            [parent initializeKeyboardActivationSequence];
-        }
-        else
-        {
-            self.keyboardActivationSequenceStorage = [AKAKeyboardActivationSequence new];
-            self.keyboardActivationSequenceStorage.delegate = self;
-            [self.keyboardActivationSequence update];
-        }
+       AKABindingController* parent = self.parent;
+       self.keyboardActivationSequenceStorage = [[NSMutableDictionary alloc] initWithCapacity:2];
+       
+       /*
+        self.keyboardActivationSequenceStorage = [AKAKeyboardActivationSequence new];
+        self.keyboardActivationSequenceStorage.delegate = self;
+        [self.keyboardActivationSequence update];
+        */
     }
     else
     {
-        [self.keyboardActivationSequence update];
+       for (AKAKeyboardActivationSequence* kas in self.keyboardActivationSequenceStorage.allValues) {
+          [kas update];
+       }
     }
 }
 
+- (AKAKeyboardActivationSequence*) keyboardActivationSequenceWithIdentifier:(NSString*)identifier
+{
+   AKAKeyboardActivationSequence* result = self.keyboardActivationSequenceStorage[identifier];
+   
+   if (result == nil)
+   {
+      AKABindingController* parent = self.parent;
+      if (parent)
+      {
+         result = [parent keyboardActivationSequenceWithIdentifier:identifier];
+      }
+   }
+   
+   return result;
+}
+
+/*
 - (AKAKeyboardActivationSequence *)keyboardActivationSequence
 {
     AKAKeyboardActivationSequence* result = self.keyboardActivationSequenceStorage;
@@ -52,6 +68,21 @@
     }
 
     return result;
+}
+ */
+
+- (void)setKeyboardActivationSequenceWithIdentifierNeedsUpdate:(NSString*)identifier {
+   if (self.keyboardActivationSequenceStorage[identifier] == nil) {
+      AKAKeyboardActivationSequence* kas = [[AKAKeyboardActivationSequence alloc] initWithDelegate:self identifier:identifier];
+      self.keyboardActivationSequenceStorage[identifier] = kas;
+   }
+   [self.keyboardActivationSequenceStorage[identifier] setNeedsUpdate];
+}
+
+- (void) updateKeyboardActivationSequencesIfNeeded {
+   for (AKAKeyboardActivationSequence* kas in self.keyboardActivationSequenceStorage.allValues) {
+      [kas updateIfNeeded];
+   }
 }
 
 - (void)enumerateItemsInKeyboardActivationSequenceUsingBlock:(void (^)(req_AKAKeyboardActivationSequenceItem, NSUInteger, outreq_BOOL))block

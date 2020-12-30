@@ -26,7 +26,8 @@ typedef AKAKeyboardActivationSequence* _Nullable                    opt_AKAKeybo
 
 - (instancetype _Nonnull)                                     init;
 
-- (instancetype _Nonnull)                         initWithDelegate:(id<AKAKeyboardActivationSequenceDelegate>_Nullable)delegate;
+- (instancetype _Nonnull)                         initWithDelegate:(id<AKAKeyboardActivationSequenceDelegate>_Nullable)delegate
+                                                        identifier:(NSString*)identifier;
 
 #pragma mark - Configuration
 
@@ -43,6 +44,7 @@ typedef AKAKeyboardActivationSequence* _Nullable                    opt_AKAKeybo
 
 #pragma mark - Properties
 
+@property(nonatomic, readonly) NSString*              identifier;
 @property(nonatomic, readonly) NSUInteger          activeItemIndex;
 
 @property(nonatomic, readonly, nonnull) UIView* inputAccessoryView;

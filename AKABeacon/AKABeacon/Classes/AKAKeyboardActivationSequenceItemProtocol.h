@@ -22,6 +22,8 @@
 
 @property(nonatomic, readonly)       BOOL                           participatesInKeyboardActivationSequence;
 
+@property(nonatomic, readonly, nonnull)       NSString*             keyboardActivationSequenceID;
+
 @property(nonatomic, weak, readonly, nullable) AKAKeyboardActivationSequence* keyboardActivationSequence;
 
 @property(nonatomic, readonly, weak) opt_UIResponder                responderForKeyboardActivationSequence;

@@ -35,6 +35,8 @@
 
 @property(nonatomic) BOOL shouldParticipateInKeyboardActivationSequence;
 
+@property(nonatomic, readonly, nonnull)       NSString*             keyboardActivationSequenceID;
+
 @end
 
 
