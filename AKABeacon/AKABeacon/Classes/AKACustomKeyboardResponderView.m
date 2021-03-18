@@ -18,6 +18,7 @@
 @property(nonatomic, strong) IBOutlet UITapGestureRecognizer* currentTapToOpenGestureRecognizer;
 @property(nonatomic) BOOL highlight;
 @property(nonatomic, readonly) AKAMutableControlConfiguration* controlConfiguration;
+@property (nonatomic, readonly) UIView* inputWrapperView;
 
 @end
 
@@ -176,6 +177,15 @@
     if ([self.delegate respondsToSelector:@selector(inputViewForCustomKeyboardResponderView:)])
     {
         result = [self.delegate inputViewForCustomKeyboardResponderView:self];
+        if (result.superview == nil) {
+           result.translatesAutoresizingMaskIntoConstraints = NO;
+           [self.inputWrapperView addSubview:result];
+           [self.inputWrapperView addConstraint: [self.inputWrapperView.widthAnchor constraintEqualToAnchor:result.widthAnchor constant:0]];
+           [self.inputWrapperView addConstraint: [self.inputWrapperView.heightAnchor constraintEqualToAnchor:result.heightAnchor constant:0]];
+           [self.inputWrapperView.centerYAnchor constraintEqualToAnchor:result.centerYAnchor constant:0].active = YES;
+           [self.inputWrapperView.centerXAnchor constraintEqualToAnchor:result.centerXAnchor constant:0].active = YES;
+        }
+        result = self.inputWrapperView;
     }
     else
     {
@@ -183,6 +193,16 @@
     }
 
     return result;
+}
+
+@synthesize inputWrapperView = _inputWrapperView;
+-(UIView*) inputWrapperView {
+   if (_inputWrapperView == nil) {
+      _inputWrapperView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 10, 10)];
+      _inputWrapperView.backgroundColor = [UIColor whiteColor];
+      _inputWrapperView.translatesAutoresizingMaskIntoConstraints = false;
+   }
+   return _inputWrapperView;
 }
 
 - (UIView*)inputAccessoryView
